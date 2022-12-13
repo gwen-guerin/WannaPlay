@@ -1,0 +1,54 @@
+[
+    {
+        "username": "filou",
+        "email": "filou@gmail.com",
+        "password": "azerty123",
+        "status": false,
+        "firstname": "Philippe",
+        "lastname": "Le Goff",
+        "age": "21",
+        "tags": ["guitarist", "singer"],
+        "teacher": [],
+        "friends": ["yannou", "gwen", "luc"],
+        "chats": []
+    },
+    {
+        "username": "luc",
+        "email": "luc@gmail.com",
+        "password": "azerty123",
+        "status": false,
+        "firstname": "Luc",
+        "lastname": "Vaida",
+        "age": "22",
+        "tags": ["triangle", "flute"],
+        "teacher": [],
+        "friends": ["yannou", "gwen", "filou"],
+        "chats": []
+    },
+    {
+        "username": "gwen",
+        "email": "gwen@gmail.com",
+        "password": "azerty123",
+        "status": false,
+        "firstname": "Gwen",
+        "lastname": "Guerin",
+        "age": "27",
+        "tags": ["guitarist", "singer"],
+        "teacher": [],
+        "friends": ["yannou", "filou", "luc"],
+        "chats": []
+    },
+    {
+        "username": "yannou",
+        "email": "yannick@gmail.com",
+        "password": "azerty123",
+        "status": false,
+        "firstname": "Yannick",
+        "lastname": "Mathieu",
+        "age": "44",
+        "tags": ["vocalist", "beatmaker"],
+        "teacher": [],
+        "friends": ["luc", "gwen", "filou"],
+        "chats": []
+    }
+]
