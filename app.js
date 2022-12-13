@@ -11,6 +11,8 @@ var chatsRouter = require('./routes/chats')
 
 var app = express();
 
+require('./models/connection');
+
 const cors = require('cors');
 app.use(cors());
 

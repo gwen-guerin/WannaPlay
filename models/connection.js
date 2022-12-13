@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const connectionString = process.env.CONNECTION_STRING;
+const connectionString = "mongodb+srv://pgoff:5mLFn9bXYcmEV2Vr@cluster0.df20yl1.mongodb.net/wannaplay?retryWrites=true&w=majority";
 
 mongoose
   .connect(connectionString, { connectTimeoutMS: 2000 })
