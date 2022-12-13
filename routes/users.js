@@ -5,7 +5,7 @@ require('../models/connection');
 const User = require('../models/users');
 const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
-
+const { checkBody } = require('../modules/CheckBody')
 //route pour retrouver le user pour la page profile
 router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
@@ -63,7 +63,7 @@ router.post('/signin', (req, res) => {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
-  const { firstname, lastname, username, email, password } = req.body;
+  const {  username, password } = req.body;
   User.findOne({ username: username }).then((data) => {
     if (data === null) {
       res.json({ result: false, error: 'User not found' });
