@@ -94,15 +94,24 @@ router.post('/signin', (req, res) => {
   });
 });
 
+// router.get("/allUsers", (req, res) => {
+//   const usernames = [];
+//   User.find().then((data) => {
+//     data.map((user) => {
+//       usernames.push(user.username);
+//     });
+//     res.json({ result: true, usernames: usernames });
+//   });
+// });
+
+//route pour récupérer tous les utilisateurs
 router.get("/allUsers", (req, res) => {
-  const usernames = [];
-  User.find().then((data) => {
-    data.map((user) => {
-      usernames.push(user.username);
-    });
-    res.json({ result: true, usernames: usernames });
+   User.find().then((data) => {
+    res.json({ result: true, usersList: data });
   });
 });
+
+
 
 router.post("/geoloc", (req, res) => {
   console.log(req.body)
