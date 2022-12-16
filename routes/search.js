@@ -4,13 +4,16 @@ const User = require("../models/users");
 require("../models/connection");
 
 router.get("/:username", (req, res) => {
-  User.find({ username: req.params.username }).then((data) => {
-    console.log(data);
-    if (data) {
-      res.json({ result: true, userList: data });
-    } else {
-      res.json({ result: false, error: "user not existing" });
-    }
+  User.find().then((data) => {
+    const foundUsers = [];
+    data.map((user, i) => {
+      let found = true;
+      for (let i = 0; i < req.params.username.length; i++) {
+        if (req.params.username[i] != user.username[i]) found = false;
+      }
+      if (found) foundUsers.push(user);
+    });
+    res.json({ users: foundUsers });
   });
 });
 
