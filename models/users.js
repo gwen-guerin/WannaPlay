@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
   password: String,
   token: String,
   location: Object,
+  profilePicture: String,
 });
 
 const User = mongoose.model('users', userSchema);
