@@ -20,11 +20,11 @@ router.get("/profile/:username", function (req, res) {
 
 router.post("/signup", (req, res) => {
   const { firstname, lastname, username, email, password } = req.body;
-
   const hash = bcrypt.hashSync(password, 10);
+  // console.log("coucou", hash);
 
   // Check if the user has not already been registered
-  if (username && password) {
+  if (username) {
     User.findOne({ username: username }).then((data) => {
       if (data === null) {
         const newUser = new User({
@@ -35,7 +35,6 @@ router.post("/signup", (req, res) => {
           password: hash,
           token: uid2(32),
         });
-
         newUser.save().then((newUser) => {
           res.json({ result: true, user: newUser });
         });
@@ -49,9 +48,40 @@ router.post("/signup", (req, res) => {
   }
 });
 
-router.post("/signin", (req, res) => {
-  if (!checkBody(req.body, ["username", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+// router.post('/signupForm', (req, res) => {
+//   const { age, city, department, teacher, instruTaught, singer, tags } = req.body;
+//   if (!checkBody(req.body, ['age', 'city', 'department', 'teacher', 'instruTaught', 'singer', 'tags'])) {
+//     res.json({ result: false, error: 'Missing or empty fields' });
+//     return;
+//   }
+//   if (token) {
+//     User.findOne({ token: token }).then((data) => {
+//       if (data === null) {
+//         const newUser = new User({
+//           firstname,
+//           lastname,
+//           username,
+//           email,
+//           password: hash,
+//           token: uid2(32),
+//         });
+
+//         newUser.save().then((newUser) => {
+//           res.json({ result: true, user: newUser });
+//         });
+//       } else {
+//         // User already exists in database
+//         res.json({ result: false, error: 'User already exists' });
+//       }
+//     });
+//   } else {
+//     res.json({ result: false, error: 'Missing or empty fields' });
+//   }
+// });
+
+router.post('/signin', (req, res) => {
+  if (!checkBody(req.body, ['username', 'password'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   const { username, password } = req.body;
