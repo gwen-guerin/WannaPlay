@@ -15,6 +15,11 @@ const userSchema = mongoose.Schema({
   token: String,
   location: Object,
   profilePicture: String,
+  age: Number,
+  teacher: Array,
+  tags: Array,
+  friends: Array,
+  chats: Array,
 });
 
 const User = mongoose.model('users', userSchema);

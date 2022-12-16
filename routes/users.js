@@ -18,11 +18,10 @@ router.get("/profile/:username", function (req, res) {
   });
 });
 
+//ROUTE SIGNUP 
 router.post("/signup", (req, res) => {
   const { firstname, lastname, username, email, password } = req.body;
   const hash = bcrypt.hashSync(password, 10);
-  // console.log("coucou", hash);
-
   // Check if the user has not already been registered
   if (username) {
     User.findOne({ username: username }).then((data) => {
@@ -48,36 +47,18 @@ router.post("/signup", (req, res) => {
   }
 });
 
-// router.post('/signupForm', (req, res) => {
-//   const { age, city, department, teacher, instruTaught, singer, tags } = req.body;
-//   if (!checkBody(req.body, ['age', 'city', 'department', 'teacher', 'instruTaught', 'singer', 'tags'])) {
-//     res.json({ result: false, error: 'Missing or empty fields' });
-//     return;
-//   }
-//   if (token) {
-//     User.findOne({ token: token }).then((data) => {
-//       if (data === null) {
-//         const newUser = new User({
-//           firstname,
-//           lastname,
-//           username,
-//           email,
-//           password: hash,
-//           token: uid2(32),
-//         });
+ // ROUTE DU FORM POUR MAJ LA DB avec les infos
+router.post('/signupForm', (req, res) => {
+  const { age, teacher, tags, username} = req.body;
+  console.log("AGE", age);
+  // console.log(username);
+  if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
+    return;
+  }
+  User.findOneAndUpdate({username: username}, {age, teacher, tags}).then(data => res.json(data))
 
-//         newUser.save().then((newUser) => {
-//           res.json({ result: true, user: newUser });
-//         });
-//       } else {
-//         // User already exists in database
-//         res.json({ result: false, error: 'User already exists' });
-//       }
-//     });
-//   } else {
-//     res.json({ result: false, error: 'Missing or empty fields' });
-//   }
-// });
+});
 
 router.post('/signin', (req, res) => {
   if (!checkBody(req.body, ['username', 'password'])) {
@@ -89,7 +70,12 @@ router.post('/signin', (req, res) => {
     if (data === null) {
       res.json({ result: false, error: "User not found" });
     } else {
-      res.json({ result: true, user: data });
+      // res.json({ result: true, user: data });
+      if (bcrypt.compareSync(password, data.password)) {
+        res.json({ result: true });
+      } else {
+        res.json({ result: false });
+      }
     }
   });
 });

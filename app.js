@@ -13,10 +13,12 @@ var app = express();
 
 require("./models/connection");
 
-const cors = require('cors');
-// const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
-// app.use(fileUpload())
+const cors = require('cors');
+
+
+app.use(fileUpload())
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
