@@ -10,7 +10,8 @@
         "tags": ["guitarist", "singer"],
         "teacher": [],
         "friends": ["yannou", "gwen", "luc"],
-        "chats": []
+        "chats": [],
+        "location": {}
     },
     {
         "username": "luc",
@@ -21,9 +22,10 @@
         "lastname": "Vaida",
         "age": "22",
         "tags": ["triangle", "flute"],
-        "teacher": [],
+        "teacher": ["triangle"],
         "friends": ["yannou", "gwen", "filou"],
-        "chats": []
+        "chats": [],
+        "location": {}
     },
     {
         "username": "gwen",
@@ -34,9 +36,10 @@
         "lastname": "Guerin",
         "age": "27",
         "tags": ["guitarist", "singer"],
-        "teacher": [],
+        "teacher": ["guitar"],
         "friends": ["yannou", "filou", "luc"],
-        "chats": []
+        "chats": [],
+        "location": {}
     },
     {
         "username": "yannou",
@@ -49,6 +52,7 @@
         "tags": ["vocalist", "beatmaker"],
         "teacher": [],
         "friends": ["luc", "gwen", "filou"],
-        "chats": []
+        "chats": [],
+        "location": {}
     }
 ]

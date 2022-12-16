@@ -14,6 +14,7 @@ const userSchema = mongoose.Schema({
   password: String,
   token: String,
   location: Object,
+  profilePicture: String,
   age: Number,
   teacher: Array,
   tags: Array,

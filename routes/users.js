@@ -104,4 +104,10 @@ router.post('/geoloc', (req, res) => {
   });
 });
 
+router.post('/photo', (req, res) => {
+  User.findOneAndUpdate({username: req.body.username}, {profilePicture: req.body.photoUrl}).then(data => {
+    User.findOne({username: req.body.username}).then(user => res.json({result: true, user: user}))
+  })
+})
+
 module.exports = router;
