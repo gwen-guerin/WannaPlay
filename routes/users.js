@@ -35,7 +35,7 @@ router.post('/signup', (req, res) => {
           token: uid2(32),
         });
         newUser.save().then((newUser) => {
-          res.json({ result: true, user: newUser });
+          res.json({ result: true, user: newUser.username });
         });
       } else {
         // User already exists in database
@@ -82,16 +82,6 @@ router.post('/signin', (req, res) => {
   });
 });
 
-// router.get("/allUsers", (req, res) => {
-//   const usernames = [];
-//   User.find().then((data) => {
-//     data.map((user) => {
-//       usernames.push(user.username);
-//     });
-//     res.json({ result: true, usernames: usernames });
-//   });
-// });
-
 //route pour récupérer tous les utilisateurs
 router.get("/allUsers", (req, res) => {
    User.find().then((data) => {
@@ -99,12 +89,16 @@ router.get("/allUsers", (req, res) => {
   });
 });
 
-
-
 router.post("/geoloc", (req, res) => {
   console.log(req.body)
   User.findOneAndUpdate({username: req.body.username}, {location: req.body.location}).then(data => {
-    User.findOne({username: req.body.username}).then(user => res.json({result: true, user: user}))
+    User.findOne({username: req.body.username}).then(user => res.json({result: true}))
+  })
+})
+
+router.post('/friend', (req, res) => {
+  User.findOne({username: req.body.username}).then(data => {
+    
   })
 })
 
