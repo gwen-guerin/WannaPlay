@@ -94,27 +94,23 @@ router.post('/signin', (req, res) => {
   });
 });
 
-router.get('/allUsers', (req, res) => {
-  const usernames = [];
-  User.find().then((data) => {
-    data.map((user) => {
-      usernames.push(user.username);
-    });
-    res.json({ result: true, usernames: usernames });
+// router.get("/allUsers", (req, res) => {
+//   const usernames = [];
+//   User.find().then((data) => {
+//     data.map((user) => {
+//       usernames.push(user.username);
+//     });
+//     res.json({ result: true, usernames: usernames });
+//   });
+// });
+
+//route pour récupérer tous les utilisateurs
+router.get("/allUsers", (req, res) => {
+   User.find().then((data) => {
+    res.json({ result: true, usersList: data });
   });
 });
 
-router.post('/geoloc', (req, res) => {
-  // console.log(req.body)
-  User.findOneAndUpdate(
-    { username: req.body.username },
-    { location: req.body.location }
-  ).then((data) => {
-    User.findOne({ username: req.body.username }).then((user) =>
-      res.json({ result: true, user: user })
-    );
-  });
-});
 
 router.post('/photo', (req, res) => {
   User.findOneAndUpdate(
@@ -139,5 +135,12 @@ router.post('/updateProfile', (req, res) => {
     { age: age, teacher, tags, description }
   ).then((data) => res.json(data));
 });
+
+router.post("/geoloc", (req, res) => {
+  console.log(req.body)
+  User.findOneAndUpdate({username: req.body.username}, {location: req.body.location}).then(data => {
+    User.findOne({username: req.body.username}).then(user => res.json({result: true, user: user}))
+  })
+})
 
 module.exports = router;
