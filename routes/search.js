@@ -17,4 +17,13 @@ router.get("/:username", (req, res) => {
   });
 });
 
+
+
+router.get("/:tags", (req, res) => {
+  User.find().then((data) => {
+    console.log(data)
+  });
+});
+
+
 module.exports = router;
