@@ -11,7 +11,20 @@ const { checkBody } = require('../modules/CheckBody');
 router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
-      res.json({ result: true, user: data });
+      console.log('BACK DATA', data);
+      res.json({
+        result: true,
+        user: {
+          firstname: data.firstname,
+          username: data.username,
+          tags: data.tags,
+          friends: data.friends,
+          description: data.description,
+          city: data.location.city,
+          age: data.age,
+          teacher: data.teacher,
+        }
+      });
     } else {
       res.json({ result: false, error: 'user not existing' });
     }
@@ -50,8 +63,6 @@ router.post('/signup', (req, res) => {
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
 router.post('/signupForm', (req, res) => {
   const { age, teacher, tags, username } = req.body;
-  // console.log("AGE", age);
-  // console.log(username);
   if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
@@ -72,9 +83,10 @@ router.post('/signin', (req, res) => {
     if (data === null) {
       res.json({ result: false, error: 'User not found' });
     } else {
-      // res.json({ result: true, user: data });
+      // console.log(data);
       if (bcrypt.compareSync(password, data.password)) {
-        res.json({ result: true });
+        res.json({ result: true, user: data });
+        // console.log(user);
       } else {
         res.json({ result: false });
       }
@@ -105,9 +117,27 @@ router.post('/geoloc', (req, res) => {
 });
 
 router.post('/photo', (req, res) => {
-  User.findOneAndUpdate({username: req.body.username}, {profilePicture: req.body.photoUrl}).then(data => {
-    User.findOne({username: req.body.username}).then(user => res.json({result: true, user: user}))
-  })
-})
+  User.findOneAndUpdate(
+    { username: req.body.username },
+    { profilePicture: req.body.photoUrl }
+  ).then((data) => {
+    User.findOne({ username: req.body.username }).then((user) =>
+      res.json({ result: true, user: user })
+    );
+  });
+});
+
+// ROUTE de MAJ DES DONNEES PERSO DANS LA PROFIL
+router.post('/updateProfile', (req, res) => {
+  const { age, username, teacher, tags, description } = req.body;
+  if (!checkBody(req.body, ['age'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
+    return;
+  }
+  User.findOneAndUpdate(
+    { username: username },
+    { age: age, teacher, tags, description }
+  ).then((data) => res.json(data));
+});
 
 module.exports = router;
