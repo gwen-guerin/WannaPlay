@@ -12,6 +12,8 @@ router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
       res.json({ result: true, user: data });
+      console.log('CLGDATA', data)
+      // console.log(data.username)
     } else {
       res.json({ result: false, error: 'user not existing' });
     }
