@@ -9,7 +9,46 @@ router.get("/:username", (req, res) => {
     data.map((user, i) => {
       let found = true;
       for (let i = 0; i < req.params.username.length; i++) {
-        if (req.params.username[i] != user.username[i]) found = false;
+        if (i > user.username.length) found = false;
+        if (i < user.username.length)
+          if (
+            req.params.username[i].toLowerCase() !=
+            user.username[i].toLowerCase()
+          )
+            found = false;
+      }
+      if (found) foundUsers.push(user);
+    });
+    res.json({ users: foundUsers });
+  });
+});
+
+router.get("/tags/:instrument", (req, res) => {
+  User.find().then((data) => {
+    const foundUsers = [];
+    data.map((user) => {
+      let found = false;
+      for (let i = 0; i < user.tags.length; i++) {
+        if (req.params.instrument.toLowerCase() === user.tags[i].toLowerCase())
+          found = true;
+      }
+      if (found) foundUsers.push(user);
+    });
+    res.json({ users: foundUsers });
+  });
+});
+
+router.get("/teacher/:instrument", (req, res) => {
+  User.find().then((data) => {
+    const foundUsers = [];
+    data.map((user) => {
+      let found = false;
+      for (let i = 0; i < user.teacher.length; i++) {
+        console.log(user.teacher[i], user.username);
+        if (
+          req.params.instrument.toLowerCase() === user.teacher[i].toLowerCase()
+        )
+          found = true;
       }
       if (found) foundUsers.push(user);
     });
