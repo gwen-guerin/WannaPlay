@@ -16,7 +16,7 @@ router.get("/:username", (req, res) => {
           )
             found = false;
       }
-      if (found) foundUsers.push(user);
+      if (found) foundUsers.push(user.username);
     });
     res.json({ users: foundUsers });
   });
@@ -31,7 +31,7 @@ router.get("/tags/:instrument", (req, res) => {
         if (req.params.instrument.toLowerCase() === user.tags[i].toLowerCase())
           found = true;
       }
-      if (found) foundUsers.push(user);
+      if (found) foundUsers.push(user.username);
     });
     res.json({ users: foundUsers });
   });
@@ -49,7 +49,7 @@ router.get("/teacher/:instrument", (req, res) => {
         )
           found = true;
       }
-      if (found) foundUsers.push(user);
+      if (found) foundUsers.push(user.username);
     });
     res.json({ users: foundUsers });
   });
