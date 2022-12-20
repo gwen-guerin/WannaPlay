@@ -11,7 +11,7 @@ const { checkBody } = require("../modules/CheckBody");
 router.get("/profile/:username", function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
-      console.log("BACK DATA", data);
+      // console.log('BACK DATA', data);
       res.json({
         result: true,
         user: {
@@ -20,7 +20,7 @@ router.get("/profile/:username", function (req, res) {
           tags: data.tags,
           friends: data.friends,
           description: data.description,
-          city: data.location.city,
+          // city: data.location.city,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture
@@ -72,7 +72,7 @@ router.post("/signupForm", (req, res) => {
   }
   User.findOneAndUpdate(
     { username: username },
-    { age: age, teacher: teacher, tags: tags }
+    { age, teacher, tags, description }
   ).then((data) => res.json(data));
 });
 
@@ -120,7 +120,7 @@ router.post("/updateProfile", (req, res) => {
   }
   User.findOneAndUpdate(
     { username: username },
-    { age: age, teacher, tags, description }
+    { age, teacher, tags, description }
   ).then((data) => res.json(data));
 });
 
@@ -135,13 +135,5 @@ router.post("/geoloc", (req, res) => {
     );
   });
 });
-
-router.post("/friend", (req, res) => {
-  User.findOne({ username: req.body.username }).then((data) => {});
-});
-
-router.get("/getFriends/:username", (req, res) => {
-  User.findOne({username: req.params.username}).then(data => res.json({result: true, friends: data.friends}))
-})
 
 module.exports = router;
