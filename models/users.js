@@ -20,6 +20,7 @@ const userSchema = mongoose.Schema({
   tags: Array,
   friends: Array,
   chats: Array,
+  description: String,
 });
 
 const User = mongoose.model('users', userSchema);
