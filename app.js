@@ -1,5 +1,7 @@
 require("dotenv").config();
-
+require("./models/connection");
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -10,12 +12,6 @@ var usersRouter = require("./routes/users");
 var chatsRouter = require("./routes/chats");
 var searchRouter = require("./routes/search");
 var app = express();
-
-require("./models/connection");
-
-const fileUpload = require('express-fileupload');
-
-const cors = require('cors');
 
 
 app.use(fileUpload())
