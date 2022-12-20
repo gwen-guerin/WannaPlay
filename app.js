@@ -9,7 +9,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var chatsRouter = require("./routes/chats");
 var searchRouter = require("./routes/search");
-var concertsRouter = require("./routes/concerts");
+var friendsRouter = require("./routes/friends");
 var app = express();
 
 require("./models/connection");
@@ -30,5 +30,6 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/chats", chatsRouter);
 app.use("/search", searchRouter);
-app.use("/concerts", concertsRouter);
+app.use("/friends", friendsRouter);
+
 module.exports = app;
