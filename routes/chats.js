@@ -1,7 +1,7 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const Pusher = require('pusher');
+const Pusher = require("pusher");
 const pusher = new Pusher({
   appId: process.env.PUSHER_APPID,
   key: process.env.PUSHER_KEY,
@@ -11,8 +11,8 @@ const pusher = new Pusher({
 });
 
 // Join chat
-router.put('/:username', (req, res) => {
-  pusher.trigger('chat', 'join', {
+router.put("/:username", (req, res) => {
+  pusher.trigger("chat", "join", {
     username: req.params.username,
   });
 
@@ -21,7 +21,7 @@ router.put('/:username', (req, res) => {
 
 // Leave chat
 router.delete("/:username", (req, res) => {
-  pusher.trigger('chat', 'leave', {
+  pusher.trigger("chat", "leave", {
     username: req.params.username,
   });
 
@@ -29,8 +29,8 @@ router.delete("/:username", (req, res) => {
 });
 
 // Send message
-router.post('/message', (req, res) => {
-  pusher.trigger('chat', 'message', req.body);
+router.post("/message", (req, res) => {
+  pusher.trigger("chat", "message", req.body);
 
   res.json({ result: true });
 });
