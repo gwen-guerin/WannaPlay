@@ -33,8 +33,8 @@ router.get("/profile/:username", function (req, res) {
 });
 
 //ROUTE SIGNUP
-router.post("/signup", (req, res) => {
-  const { firstname, lastname, username, email, password } = req.body;
+router.post('/signup', (req, res) => {
+  const { firstname, lastname, username, email, password, description } = req.body;
   const hash = bcrypt.hashSync(password, 10);
   // Check if the user has not already been registered
   if (username) {
@@ -45,6 +45,7 @@ router.post("/signup", (req, res) => {
           lastname: lastname,
           username: username,
           email: email,
+          description: description,
           password: hash,
           token: uid2(32),
           profilePicture:
@@ -97,9 +98,19 @@ router.post("/signin", (req, res) => {
   });
 });
 
-//route pour récupérer tous les utilisateurs
 router.get("/allUsers", (req, res) => {
+  const usernames = [];
   User.find().then((data) => {
+    data.map((user) => {
+      usernames.push(user.username);
+    });
+    res.json({ result: true, usernames: usernames });
+  });
+});
+
+//route pour récupérer tous les utilisateurs
+router.get("/usersList", (req, res) => {
+   User.find().then((data) => {
     res.json({ result: true, usersList: data });
   });
 });
