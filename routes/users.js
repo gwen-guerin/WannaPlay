@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const fetch = require('node-fetch');
-require('../models/connection');
 const User = require('../models/users');
 const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
@@ -11,7 +9,7 @@ const { checkBody } = require('../modules/CheckBody');
 router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
-      console.log('BACK DATA', data);
+      // console.log('BACK DATA', data);
       res.json({
         result: true,
         user: {
@@ -64,14 +62,14 @@ router.post('/signup', (req, res) => {
 
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
 router.post('/signupForm', (req, res) => {
-  const { age, teacher, tags, username, description } = req.body;
+  const { age, teacher, tags, username, description} = req.body;
   if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   User.findOneAndUpdate(
     { username: username },
-    { age: age, teacher: teacher, tags: tags, description: description }
+    { age, teacher, tags, description }
   ).then((data) => res.json(data));
 });
 
@@ -117,7 +115,7 @@ router.get("/usersList", (req, res) => {
 router.post('/photo', (req, res) => {
   User.findOneAndUpdate(
     { username: req.body.username },
-    { profilePicture: req.body.photoUrl }
+    { profilePicture: req.body.profilePicture }
   ).then((data) => {
     User.findOne({ username: req.body.username }).then((user) =>
       res.json({ result: true, user: user })
@@ -134,12 +132,12 @@ router.post('/updateProfile', (req, res) => {
   }
   User.findOneAndUpdate(
     { username: username },
-    { age: age, teacher, tags, description }
+    { age, teacher, tags, description }
   ).then((data) => res.json(data));
 });
 
 router.post("/geoloc", (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   User.findOneAndUpdate({username: req.body.username}, {location: req.body.location}).then(data => {
     User.findOne({username: req.body.username}).then(user => res.json({result: true, user: user}))
   })

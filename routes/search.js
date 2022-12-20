@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const User = require("../models/users");
-require("../models/connection");
 
 router.get("/:username", (req, res) => {
   User.find().then((data) => {
