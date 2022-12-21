@@ -66,7 +66,7 @@ router.post('/signup', (req, res) => {
 
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
 router.post("/signupForm", (req, res) => {
-  const { age, teacher, tags, username } = req.body;
+  const { age, teacher, tags, username, description } = req.body;
   if (!checkBody(req.body, ["age", "teacher", "tags"])) {
     res.json({ result: false, error: "Missing or empty fields" });
     return;
