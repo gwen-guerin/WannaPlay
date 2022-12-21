@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const concertsSchema = mongoose.Schema({
   eventName: String,
-  type: String,
+  style: String,
   date: String,
-  places: String,
+  place: String,
 });
 
 const Concert = mongoose.model("concerts", concertsSchema);
