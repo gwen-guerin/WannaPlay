@@ -10,6 +10,7 @@ var usersRouter = require("./routes/users");
 var chatsRouter = require("./routes/chats");
 var searchRouter = require("./routes/search");
 var friendsRouter = require("./routes/friends");
+var concertsRouter = require("./routes/concerts");
 var app = express();
 
 require("./models/connection");
@@ -31,5 +32,5 @@ app.use("/users", usersRouter);
 app.use("/chats", chatsRouter);
 app.use("/search", searchRouter);
 app.use("/friends", friendsRouter);
-
+app.use("/concerts", concertsRouter);
 module.exports = app;

@@ -6,13 +6,25 @@ require("../models/connection");
 
 router.get("/", (req, res) => {
   Concert.find().then((data) => {
-    res.json({ result: true, usersList: data });
+    console.log("concerts", data);
+    if (data) {
+      const allConcert = data.map((concert) => {
+        console.log(concert);
+        return {
+          eventName: concert.eventName,
+          date: concert.date,
+          type: concert.type,
+          places: concert.places,
+        };
+      });
+      res.json({ result: true, concerts: allConcert });
+    }
   });
 });
 
 router.post("/createConcert", (req, res) => {
   const { eventName, date, type, places } = req.body;
-
+  console.log(req.body);
   Concert.findOne({ eventName: eventName }).then((data) => {
     if (data === null) {
       const newConcert = new Concert({
@@ -21,8 +33,8 @@ router.post("/createConcert", (req, res) => {
         type: type,
         places: places,
       });
-      newConcert.save().then((data) => {
-        res.json({ result: true, eventName: data });
+      newConcert.save().then((wen) => {
+        res.json({ result: true, eventName: wen });
       });
     } else {
       res.json({ result: false, error: "Concert already exists" });
