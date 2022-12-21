@@ -4,24 +4,24 @@ const Concert = require("../models/concerts");
 const fetch = require("node-fetch");
 require("../models/connection");
 
-router.get('/', (req, res) => {
-  Concert.find().then((data) => {
-    console.log('concerts', data);
-    if (data) {
-      data.map((concert, i) => {
-        res.json({
-          result: true,
-          concert: {
-            eventName: data[i].eventName,
-            date: data[i].date,
-            style: data[i].style,
-            place: data[i].place,
-          },
-        });
-      });
-    }
-  });
-});
+// router.get('/', (req, res) => {
+//   Concert.find().then((data) => {
+//     console.log('concerts', data);
+//     if (data) {
+//       data.map((concert, i) => {
+//         res.json({
+//           result: true,
+//           concert: {
+//             eventName: data[i].eventName,
+//             date: data[i].date,
+//             style: data[i].style,
+//             place: data[i].place,
+//           },
+//         });
+//       });
+//     }
+//   });
+// });
 
 
 

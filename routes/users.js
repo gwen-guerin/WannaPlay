@@ -20,7 +20,7 @@ router.get("/profile/:username", function (req, res) {
           tags: data.tags,
           friends: data.friends,
           description: data.description,
-          // city: data.location.city,
+          status: data.status,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture
@@ -146,5 +146,21 @@ router.post("/geoloc", (req, res) => {
     );
   });
 });
+
+
+// ROUTE de MAJ DES status (online ou offline)
+router.post("/isOnline", (req, res) => {
+User.findOneAndUpdate(
+    { username: req.body.username },
+    { status: true }
+  ).then((data) => res.json({result: true}));
+});
+// ROUTE de MAJ DES status (offline)
+router.post("/isOffline", (req, res) => {
+  User.findOneAndUpdate(
+      { username: req.body.username },
+      { status: false }
+    ).then((data) => res.json({result: true}));
+  });
 
 module.exports = router;
