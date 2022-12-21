@@ -25,24 +25,24 @@ require('../models/connection');
 
 
 
-router.post("/createConcert", (req, res) => {
-  const { eventName, date, type, places } = req.body;
+// router.post("/createConcert", (req, res) => {
+//   const { eventName, date, type, places } = req.body;
 
-  Concert.findOne({ eventName: eventName }).then((data) => {
-    if (data === null) {
-      const newConcert = new Concert({
-        eventName: eventName,
-        date: date,
-        type: type,
-        places: places,
-      });
-      newConcert.save().then((data) => {
-        res.json({ result: true, eventName: data });
-      });
-    } else {
-      res.json({ result: false, error: 'Concert already exists' });
-    }
-  });
-});
+//   Concert.findOne({ eventName: eventName }).then((data) => {
+//     if (data === null) {
+//       const newConcert = new Concert({
+//         eventName: eventName,
+//         date: date,
+//         type: type,
+//         places: places,
+//       });
+//       newConcert.save().then((data) => {
+//         res.json({ result: true, eventName: data });
+//       });
+//     } else {
+//       res.json({ result: false, error: 'Concert already exists' });
+//     }
+//   });
+// });
 
 module.exports = router;

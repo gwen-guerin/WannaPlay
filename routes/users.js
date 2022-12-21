@@ -1,14 +1,14 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-const fetch = require("node-fetch");
-require("../models/connection");
-const User = require("../models/users");
-const uid2 = require("uid2");
-const bcrypt = require("bcrypt");
-const { checkBody } = require("../modules/CheckBody");
+const fetch = require('node-fetch');
+require('../models/connection');
+const User = require('../models/users');
+const uid2 = require('uid2');
+const bcrypt = require('bcrypt');
+const { checkBody } = require('../modules/CheckBody');
 
 //route pour retrouver le user pour la page profile
-router.get("/profile/:username", function (req, res) {
+router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
       // console.log('BACK DATA', data);
@@ -21,20 +21,22 @@ router.get("/profile/:username", function (req, res) {
           friends: data.friends,
           description: data.description,
           status: data.status,
+          city: data.location.city,
           age: data.age,
           teacher: data.teacher,
-          profilePicture: data.profilePicture
+          profilePicture: data.profilePicture,
         },
       });
     } else {
-      res.json({ result: false, error: "user not existing" });
+      res.json({ result: false, error: 'user not existing' });
     }
   });
 });
 
 //ROUTE SIGNUP
 router.post('/signup', (req, res) => {
-  const { firstname, lastname, username, email, password, description } = req.body;
+  const { firstname, lastname, username, email, password, description } =
+    req.body;
   const hash = bcrypt.hashSync(password, 10);
   // Check if the user has not already been registered
   if (username) {
@@ -49,26 +51,26 @@ router.post('/signup', (req, res) => {
           password: hash,
           token: uid2(32),
           profilePicture:
-            "https://res.cloudinary.com/dr2opzcia/image/upload/v1671459986/w8aeavlzceo9jihz2wu8.jpg",
+            'https://res.cloudinary.com/dr2opzcia/image/upload/v1671459986/w8aeavlzceo9jihz2wu8.jpg',
         });
         newUser.save().then((newUser) => {
           res.json({ result: true, user: newUser.username });
         });
       } else {
         // User already exists in database
-        res.json({ result: false, error: "User already exists" });
+        res.json({ result: false, error: 'User already exists' });
       }
     });
   } else {
-    res.json({ result: false, error: "Missing or empty fields" });
+    res.json({ result: false, error: 'Missing or empty fields' });
   }
 });
 
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
-router.post("/signupForm", (req, res) => {
+router.post('/signupForm', (req, res) => {
   const { age, teacher, tags, username, description } = req.body;
-  if (!checkBody(req.body, ["age", "teacher", "tags"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+  if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   User.findOneAndUpdate(
@@ -77,15 +79,15 @@ router.post("/signupForm", (req, res) => {
   ).then((data) => res.json(data));
 });
 
-router.post("/signin", (req, res) => {
-  if (!checkBody(req.body, ["username", "password"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+router.post('/signin', (req, res) => {
+  if (!checkBody(req.body, ['username', 'password'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   const { username, password } = req.body;
   User.findOne({ username: username }).then((data) => {
     if (data === null) {
-      res.json({ result: false, error: "User not found" });
+      res.json({ result: false, error: 'User not found' });
     } else {
       // console.log(data);
       if (bcrypt.compareSync(password, data.password)) {
@@ -98,7 +100,7 @@ router.post("/signin", (req, res) => {
   });
 });
 
-router.get("/allUsers", (req, res) => {
+router.get('/allUsers', (req, res) => {
   const usernames = [];
   User.find().then((data) => {
     data.map((user) => {
@@ -109,13 +111,13 @@ router.get("/allUsers", (req, res) => {
 });
 
 //route pour récupérer tous les utilisateurs
-router.get("/usersList", (req, res) => {
-   User.find().then((data) => {
+router.get('/usersList', (req, res) => {
+  User.find().then((data) => {
     res.json({ result: true, usersList: data });
   });
 });
 
-router.post("/photo", (req, res) => {
+router.post('/photo', (req, res) => {
   User.findOneAndUpdate(
     { username: req.body.username },
     { profilePicture: req.body.photoUrl }
@@ -123,10 +125,10 @@ router.post("/photo", (req, res) => {
 });
 
 // ROUTE de MAJ DES DONNEES PERSO DANS LA PROFIL
-router.post("/updateProfile", (req, res) => {
+router.post('/updateProfile', (req, res) => {
   const { age, username, teacher, tags, description } = req.body;
-  if (!checkBody(req.body, ["age"])) {
-    res.json({ result: false, error: "Missing or empty fields" });
+  if (!checkBody(req.body, ['age'])) {
+    res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   User.findOneAndUpdate(
@@ -135,7 +137,7 @@ router.post("/updateProfile", (req, res) => {
   ).then((data) => res.json(data));
 });
 
-router.post("/geoloc", (req, res) => {
+router.post('/geoloc', (req, res) => {
   console.log(req.body);
   User.findOneAndUpdate(
     { username: req.body.username },
@@ -147,20 +149,18 @@ router.post("/geoloc", (req, res) => {
   });
 });
 
-
 // ROUTE de MAJ DES status (online ou offline)
-router.post("/isOnline", (req, res) => {
-User.findOneAndUpdate(
-    { username: req.body.username },
-    { status: true }
-  ).then((data) => res.json({result: true}));
+router.post('/isOnline', (req, res) => {
+  User.findOneAndUpdate({ username: req.body.username }, { status: true }).then(
+    (data) => res.json({ result: true })
+  );
 });
 // ROUTE de MAJ DES status (offline)
-router.post("/isOffline", (req, res) => {
+router.post('/isOffline', (req, res) => {
   User.findOneAndUpdate(
-      { username: req.body.username },
-      { status: false }
-    ).then((data) => res.json({result: true}));
-  });
+    { username: req.body.username },
+    { status: false }
+  ).then((data) => res.json({ result: true }));
+});
 
 module.exports = router;
