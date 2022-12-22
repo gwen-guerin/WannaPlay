@@ -76,7 +76,7 @@ router.post('/signupForm', (req, res) => {
   User.findOneAndUpdate(
     { username: username },
     { age, teacher, tags, description }
-  ).then((data) => res.json(data));
+  ).then((data) => res.json({result: true}));
 });
 
 router.post('/signin', (req, res) => {
@@ -91,7 +91,7 @@ router.post('/signin', (req, res) => {
     } else {
       // console.log(data);
       if (bcrypt.compareSync(password, data.password)) {
-        res.json({ result: true, user: data });
+        res.json({ result: true});
         // console.log(user);
       } else {
         res.json({ result: false });

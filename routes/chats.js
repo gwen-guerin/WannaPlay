@@ -59,6 +59,7 @@ router.post("/createChat", (req, res) => {
               chat.users[1] === req.body.secondUser
             ) {
               exists = true;
+              return res.json({ result: false, chatName: chat.chatName, friend: req.body.secondUser })
             }
         });
       }
@@ -93,16 +94,19 @@ router.post("/createChat", (req, res) => {
               User.findOne({ username: req.body.username })
                 .populate("chats")
                 .then((update) => {
-                  console.log(update.chats[0].users);
-                  return res.json({
-                    result: true,
-                    success: "Chat successfully created!",
+                  Chat.findOne({_id: chatId}).then(chat => {
+                    return res.json({
+                      result: true,
+                      success: "Chat successfully created!",
+                      chatName: chat.chatName,
+                      friend: req.body.secondUser
+                  })
                   });
                 });
             });
           });
         });
-      } else return res.json({ result: false, error: "Chat already exists!" });
+      }
     });
 });
 
