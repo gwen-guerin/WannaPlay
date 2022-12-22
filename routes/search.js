@@ -16,8 +16,9 @@ router.get("/:username", (req, res) => {
           )
             found = false;
       }
-      if (found) foundUsers.push(user.username);
+      if (found) foundUsers.push({username: user.username, profilePicture: user.profilePicture});
     });
+    console.log(foundUsers)
     res.json({ users: foundUsers });
   });
 });
