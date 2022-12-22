@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const geolocSchema = mongoose.Schema({
   city: String,
   latitude: Number,
   longitude: Number,
-})
+});
 
 const userSchema = mongoose.Schema({
   firstname: String,
@@ -19,11 +19,11 @@ const userSchema = mongoose.Schema({
   teacher: Array,
   tags: Array,
   friends: Array,
-  chats: Array,
+  chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "chats", username: String }],
   description: String,
   status: Boolean,
 });
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model("users", userSchema);
 
 module.exports = User;

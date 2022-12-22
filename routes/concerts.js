@@ -1,8 +1,8 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const Concert = require('../models/concerts');
-const fetch = require('node-fetch');
-require('../models/connection');
+const Concert = require("../models/concerts");
+const fetch = require("node-fetch");
+require("../models/connection");
 
 // router.get('/', (req, res) => {
 //   Concert.find().then((data) => {
@@ -22,8 +22,6 @@ require('../models/connection');
 //     }
 //   });
 // });
-
-
 
 // router.post("/createConcert", (req, res) => {
 //   const { eventName, date, type, places } = req.body;
