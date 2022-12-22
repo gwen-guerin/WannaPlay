@@ -22,4 +22,8 @@ router.post("/removeFriend", (req, res) => {
   ).then(() => res.json({ result: true }));
 });
 
+router.get("/getFriends/:username", (req, res) => {
+    User.findOne({username: req.params.username}).then(data => res.json({result: true, friends: data.friends}))
+  })
+
 module.exports = router;
