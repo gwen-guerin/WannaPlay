@@ -107,18 +107,18 @@ router.post("/createChat", (req, res) => {
 });
 
 // Join chat
-router.post("/joinChat", (req, res) => {
-  pusher.trigger(req.body.chatName, "join", {
-    username: req.body.username,
+router.put('/:username', (req, res) => {
+  pusher.trigger('chat', 'join', {
+    username: req.params.username,
   });
 
   res.json({ result: true });
 });
 
 // Leave chat
-router.post("/leaveChat", (req, res) => {
-  pusher.trigger(req.body.chatName, "leave", {
-    username: req.body.username,
+router.delete("/:username", (req, res) => {
+  pusher.trigger('chat', 'leave', {
+    username: req.params.username,
   });
   // console.log('messages',req.body.messages)
   // Chat.findOneAndUpdate(
@@ -129,13 +129,10 @@ router.post("/leaveChat", (req, res) => {
 });
 
 // Send message
-router.post("/message", (req, res) => {
-  console.log(req.body);
-  pusher.trigger(req.body.chatName, "message", req.body.payload);
-  Chat.findOneAndUpdate(
-    { chatName: req.body.chatName },
-    { $push: { messages: req.body.payload } }
-  ).then(() => res.json({ result: true }));
+router.post('/message', (req, res) => {
+  pusher.trigger('chat', 'message', req.body);
+
+  res.json({ result: true });
 });
 
 module.exports = router;

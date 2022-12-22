@@ -21,6 +21,7 @@ const userSchema = mongoose.Schema({
   friends: Array,
   chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "chats", username: String }],
   description: String,
+  status: Boolean,
 });
 
 const User = mongoose.model("users", userSchema);
