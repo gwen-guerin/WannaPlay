@@ -21,7 +21,7 @@ router.get('/profile/:username', function (req, res) {
           friends: data.friends,
           description: data.description,
           status: data.status,
-          city: data.location.city,
+          city: data.city,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture,
