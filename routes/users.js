@@ -68,14 +68,14 @@ router.post('/signup', (req, res) => {
 
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
 router.post('/signupForm', (req, res) => {
-  const { age, teacher, tags, username, description } = req.body;
+  const { age, teacher, tags, username, description, city } = req.body;
   if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
   User.findOneAndUpdate(
     { username: username },
-    { age, teacher, tags, description }
+    { age, teacher, tags, description, location: {city: city} }
   ).then((data) => res.json({result: true}));
 });
 

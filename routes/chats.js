@@ -14,9 +14,7 @@ const pusher = new Pusher({
 });
 
 router.get("/allMessages/:chatName", (req, res) => {
-  console.log("chatname", req.params.chatName);
   Chat.findOne({ chatName: req.params.chatName }).then((data) => {
-    console.log(data);
     if (data.messages.length > 0)
       res.json({ result: true, messages: data.messages });
     else res.json({ result: false });
@@ -28,12 +26,10 @@ router.get("/allChats/:username", (req, res) => {
   User.findOne({ username: req.params.username })
     .populate("chats")
     .then((chat) => {
-      console.log(chat.chats);
       chat.chats.map((data) => {
         if (data.users[0] === req.params.username)
           foundChats.push({ friend: data.users[1], chatName: data.chatName });
         if (data.users[1] === req.params.username) {
-          console.log("c la merde");
           foundChats.push({ friend: data.users[0], chatName: data.chatName });
         }
       });
@@ -82,7 +78,6 @@ router.post("/createChat", (req, res) => {
               },
             }
           ).then((newChat2) => {
-            console.log(newChat2._id);
             User.findOneAndUpdate(
               { username: req.body.secondUser },
               {
@@ -124,17 +119,11 @@ router.post("/leaveChat", (req, res) => {
   pusher.trigger(req.body.chatName, "leave", {
     username: req.body.username,
   });
-  // console.log('messages',req.body.messages)
-  // Chat.findOneAndUpdate(
-  //   { chatName: req.body.chatName },
-  //   { $push: { messages: req.body.messages } }
-  // ).then((data) => console.log('pk?',data.messages));
   res.json({ result: true });
 });
 
 // Send message
 router.post("/message", (req, res) => {
-  console.log(req.body);
   pusher.trigger(req.body.chatName, "message", req.body.payload);
   Chat.findOneAndUpdate(
     { chatName: req.body.chatName },
