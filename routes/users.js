@@ -21,11 +21,10 @@ router.get('/profile/:username', function (req, res) {
           friends: data.friends,
           description: data.description,
           status: data.status,
-          city: data.city,
+          city: data.location.city,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture,
-          city: data.location.city
         },
       });
     } else {
@@ -76,7 +75,7 @@ router.post('/signupForm', (req, res) => {
   }
   User.findOneAndUpdate(
     { username: username },
-    { age, teacher, tags, description, location: {city: city} }
+    { age, teacher, tags, description, city }
   ).then((data) => res.json({result: true}));
 });
 
@@ -145,7 +144,7 @@ router.post('/geoloc', (req, res) => {
     { location: req.body.location }
   ).then((data) => {
     User.findOne({ username: req.body.username }).then((user) =>
-      res.json({ result: true })
+      res.json({ result: true, city: user.location.city  })
     );
   });
 });
