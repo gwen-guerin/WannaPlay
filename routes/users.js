@@ -25,6 +25,7 @@ router.get('/profile/:username', function (req, res) {
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture,
+          city: data.location.city
         },
       });
     } else {
