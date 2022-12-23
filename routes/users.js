@@ -120,7 +120,7 @@ router.get('/usersList', (req, res) => {
 router.post('/photo', (req, res) => {
   User.findOneAndUpdate(
     { username: req.body.username },
-    { profilePicture: req.body.photoUrl }
+    { profilePicture: req.body.profilePicture }
   ).then((data) => res.json({ result: true }));
 });
 

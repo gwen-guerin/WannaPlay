@@ -16,9 +16,13 @@ router.get("/:username", (req, res) => {
           )
             found = false;
       }
-      if (found) foundUsers.push({username: user.username, profilePicture: user.profilePicture});
+      if (found)
+        foundUsers.push({
+          username: user.username,
+          profilePicture: user.profilePicture,
+        });
     });
-    console.log(foundUsers)
+    console.log(foundUsers);
     res.json({ users: foundUsers });
   });
 });
@@ -32,7 +36,11 @@ router.get("/tags/:instrument", (req, res) => {
         if (req.params.instrument.toLowerCase() === user.tags[i].toLowerCase())
           found = true;
       }
-      if (found) foundUsers.push(user.username);
+      if (found)
+        foundUsers.push({
+          username: user.username,
+          profilePicture: user.profilePicture,
+        });
     });
     res.json({ users: foundUsers });
   });
@@ -50,19 +58,20 @@ router.get("/teacher/:instrument", (req, res) => {
         )
           found = true;
       }
-      if (found) foundUsers.push(user.username);
+      if (found)
+        foundUsers.push({
+          username: user.username,
+          profilePicture: user.profilePicture,
+        });
     });
     res.json({ users: foundUsers });
   });
 });
 
-
-
 router.get("/:tags", (req, res) => {
   User.find().then((data) => {
-    console.log(data)
+    console.log(data);
   });
 });
-
 
 module.exports = router;
