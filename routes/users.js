@@ -21,11 +21,10 @@ router.get('/profile/:username', function (req, res) {
           friends: data.friends,
           description: data.description,
           status: data.status,
-          city: data.city,
+          city: data.location,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture,
-          city: data.location.city
         },
       });
     } else {
@@ -69,14 +68,15 @@ router.post('/signup', (req, res) => {
 
 // ROUTE DU FORM POUR MAJ LA DB avec les infos
 router.post('/signupForm', (req, res) => {
-  const { age, teacher, tags, username, description } = req.body;
+  const { age, teacher, tags, username, description, city } = req.body;
   if (!checkBody(req.body, ['age', 'teacher', 'tags'])) {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
+  console.log('back', city)
   User.findOneAndUpdate(
     { username: username },
-    { age, teacher, tags, description }
+    { age, teacher, tags, description, location: city }
   ).then((data) => res.json({result: true}));
 });
 
