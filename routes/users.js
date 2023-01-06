@@ -21,7 +21,7 @@ router.get('/profile/:username', function (req, res) {
           friends: data.friends,
           description: data.description,
           status: data.status,
-          city: data.location,
+          city: data.location.city,
           age: data.age,
           teacher: data.teacher,
           profilePicture: data.profilePicture,
@@ -35,7 +35,7 @@ router.get('/profile/:username', function (req, res) {
 
 //ROUTE SIGNUP
 router.post('/signup', (req, res) => {
-  const { firstname, lastname, username, email, password, description } =
+  const { firstname, lastname, username, email, password } =
     req.body;
   const hash = bcrypt.hashSync(password, 10);
   // Check if the user has not already been registered
@@ -43,11 +43,10 @@ router.post('/signup', (req, res) => {
     User.findOne({ username: username }).then((data) => {
       if (data === null) {
         const newUser = new User({
-          firstname: firstname,
-          lastname: lastname,
-          username: username,
-          email: email,
-          description: description,
+          firstname,
+          lastname,
+          username,
+          email,
           password: hash,
           token: uid2(32),
           profilePicture:
@@ -73,11 +72,10 @@ router.post('/signupForm', (req, res) => {
     res.json({ result: false, error: 'Missing or empty fields' });
     return;
   }
-  console.log('back', city)
   User.findOneAndUpdate(
-    { username: username },
-    { age, teacher, tags, description, location: city }
-  ).then((data) => res.json({result: true}));
+    { username },
+    { age, teacher, tags, description, city }
+  ).then(() => res.json({result: true}));
 });
 
 router.post('/signin', (req, res) => {
@@ -145,7 +143,7 @@ router.post('/geoloc', (req, res) => {
     { location: req.body.location }
   ).then((data) => {
     User.findOne({ username: req.body.username }).then((user) =>
-      res.json({ result: true })
+      res.json({ result: true, city: user.location.city  })
     );
   });
 });
