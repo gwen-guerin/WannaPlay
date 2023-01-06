@@ -20,6 +20,7 @@ router.get("/:username", (req, res) => {
         foundUsers.push({
           username: user.username,
           profilePicture: user.profilePicture,
+          location: user.location
         });
     });
     console.log(foundUsers);
@@ -40,6 +41,7 @@ router.get("/tags/:instrument", (req, res) => {
         foundUsers.push({
           username: user.username,
           profilePicture: user.profilePicture,
+          location : user.location,
         });
     });
     res.json({ users: foundUsers });
@@ -62,6 +64,7 @@ router.get("/teacher/:instrument", (req, res) => {
         foundUsers.push({
           username: user.username,
           profilePicture: user.profilePicture,
+          location: user.location,
         });
     });
     res.json({ users: foundUsers });
@@ -73,5 +76,52 @@ router.get("/:tags", (req, res) => {
     console.log(data);
   });
 });
+
+router.post("/commonFriends", (req, res) => {
+  const foundUsers = [];
+  const foundFriends = [];
+  User.findOne({ username: req.body.friend })
+    .populate("chats")
+    .then((chat) => {
+      chat.chats.map((data, i) => {
+        if (data.users[0] === req.body.friend)
+          foundUsers.push(data.users[1]);
+        if (data.users[1] === req.body.friend) {
+          foundUsers.push(data.users[0] );
+        }
+      });
+      console.log(foundUsers, 'chats')
+      User.findOne({ username: req.body.username }).then((user) => {
+        user.friends.map((friend) => {
+          foundUsers.map((chat) => {
+            console.log("friend", chat, "userFriend", friend)
+            if (friend === chat.friend) {
+              foundFriends.push(chat);
+            }
+          });
+        });
+        console.log('found', foundFriends);
+      });
+      res.json({ result: true, allFriends: foundFriends });
+    });
+});
+
+function isNearer(first, second) {
+  
+}
+
+function sortByLocation(users, userLocation) {
+  const usersWithDistances = users.map(user => {
+    const distance = Math.sqrt(
+      Math.pow(userLocation.latidude - user.location.latitude, 2) + 
+      Math.pow(userLocation.longitude - user.location.longitude, 2)
+    );
+    return { ...user, distance };
+  });
+
+  usersWithDistances.sort((a, b) => a.distance - b.distance);
+
+  return usersWithDistances;
+}
 
 module.exports = router;
