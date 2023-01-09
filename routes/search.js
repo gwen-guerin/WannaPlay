@@ -20,7 +20,7 @@ router.get("/:username", (req, res) => {
         foundUsers.push({
           username: user.username,
           profilePicture: user.profilePicture,
-          location: user.location
+          location: user.location,
         });
     });
     console.log(foundUsers);
@@ -41,7 +41,7 @@ router.get("/tags/:instrument", (req, res) => {
         foundUsers.push({
           username: user.username,
           profilePicture: user.profilePicture,
-          location : user.location,
+          location: user.location,
         });
     });
     res.json({ users: foundUsers });
@@ -82,39 +82,50 @@ router.post("/commonFriends", (req, res) => {
   const foundFriends = [];
   User.findOne({ username: req.body.friend })
     .populate("chats")
-    .then((chat) => {
-      chat.chats.map((data, i) => {
-        if (data.users[0] === req.body.friend)
-          foundUsers.push(data.users[1]);
+    .then((me) => {
+      me.chats.map((data, i) => {
+        if (data.users[0] === req.body.friend) foundUsers.push(data.users[1]);
         if (data.users[1] === req.body.friend) {
-          foundUsers.push(data.users[0] );
+          foundUsers.push(data.users[0]);
         }
       });
-      console.log(foundUsers, 'chats')
-      User.findOne({ username: req.body.username }).then((user) => {
-        user.friends.map((friend) => {
-          foundUsers.map((chat) => {
-            console.log("friend", chat, "userFriend", friend)
-            if (friend === chat.friend) {
-              foundFriends.push(chat);
-            }
+      console.log(foundUsers, "chats");
+      User.findOne({ username: req.body.username })
+        .then((user) => {
+          console.log("friends", user.friends);
+          console.log("foundFriends", foundUsers);
+          user.friends.map((friend) => {
+            foundUsers.map((chat) => {
+              console.log("friend", chat, "userFriend", friend);
+              if (friend == chat) {
+                foundFriends.push(chat);
+              }
+            });
           });
+          console.log("found", foundFriends);
+        })
+        .then(() => {
+          foundFriends.map((friend, i) => {
+            User.findOne({ username: friend }).then((user) => {
+              foundFriends[i] = {
+                friend: friend,
+                profilePicture: user.profilePicture,
+              };
+            });
+          });
+          console.log("sorted", foundFriends);
+          res.json({ result: true, allFriends: foundFriends });
         });
-        console.log('found', foundFriends);
-      });
-      res.json({ result: true, allFriends: foundFriends });
     });
 });
 
-function isNearer(first, second) {
-  
-}
+function isNearer(first, second) {}
 
 function sortByLocation(users, userLocation) {
-  const usersWithDistances = users.map(user => {
+  const usersWithDistances = users.map((user) => {
     const distance = Math.sqrt(
-      Math.pow(userLocation.latidude - user.location.latitude, 2) + 
-      Math.pow(userLocation.longitude - user.location.longitude, 2)
+      Math.pow(userLocation.latidude - user.location.latitude, 2) +
+        Math.pow(userLocation.longitude - user.location.longitude, 2)
     );
     return { ...user, distance };
   });
