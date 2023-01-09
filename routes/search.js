@@ -119,20 +119,20 @@ router.post("/commonFriends", (req, res) => {
     });
 });
 
-function isNearer(first, second) {}
+// function isNearer(first, second) {}
 
-function sortByLocation(users, userLocation) {
-  const usersWithDistances = users.map((user) => {
-    const distance = Math.sqrt(
-      Math.pow(userLocation.latidude - user.location.latitude, 2) +
-        Math.pow(userLocation.longitude - user.location.longitude, 2)
-    );
-    return { ...user, distance };
-  });
+// function sortByLocation(users, userLocation) {
+//   const usersWithDistances = users.map((user) => {
+//     const distance = Math.sqrt(
+//       Math.pow(userLocation.latidude - user.location.latitude, 2) +
+//         Math.pow(userLocation.longitude - user.location.longitude, 2)
+//     );
+//     return { ...user, distance };
+//   });
 
-  usersWithDistances.sort((a, b) => a.distance - b.distance);
+//   usersWithDistances.sort((a, b) => a.distance - b.distance);
 
-  return usersWithDistances;
-}
+//   return usersWithDistances;
+// }
 
 module.exports = router;
