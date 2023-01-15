@@ -7,11 +7,10 @@ const uid2 = require('uid2');
 const bcrypt = require('bcrypt');
 const { checkBody } = require('../modules/CheckBody');
 
-//route pour retrouver le user pour la page profile
+//route pour retrouver le user pour la page profile   ajouuuuut token !!+ secu => JWT token 
 router.get('/profile/:username', function (req, res) {
   User.findOne({ username: req.params.username }).then((data) => {
     if (data) {
-      // console.log('BACK DATA', data);
       res.json({
         result: true,
         user: {
@@ -88,10 +87,8 @@ router.post('/signin', (req, res) => {
     if (data === null) {
       res.json({ result: false, error: 'User not found' });
     } else {
-      // console.log(data);
       if (bcrypt.compareSync(password, data.password)) {
         res.json({ result: true});
-        // console.log(user);
       } else {
         res.json({ result: false });
       }
@@ -137,7 +134,6 @@ router.post('/updateProfile', (req, res) => {
 });
 
 router.post('/geoloc', (req, res) => {
-  console.log(req.body);
   User.findOneAndUpdate(
     { username: req.body.username },
     { location: req.body.location }

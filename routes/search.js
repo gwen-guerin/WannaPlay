@@ -23,7 +23,6 @@ router.get("/:username", (req, res) => {
           location: user.location,
         });
     });
-    console.log(foundUsers);
     res.json({ users: foundUsers });
   });
 });
@@ -54,7 +53,6 @@ router.get("/teacher/:instrument", (req, res) => {
     data.map((user) => {
       let found = false;
       for (let i = 0; i < user.teacher.length; i++) {
-        console.log(user.teacher[i], user.username);
         if (
           req.params.instrument.toLowerCase() === user.teacher[i].toLowerCase()
         )
@@ -73,7 +71,6 @@ router.get("/teacher/:instrument", (req, res) => {
 
 router.get("/:tags", (req, res) => {
   User.find().then((data) => {
-    console.log(data);
   });
 });
 
@@ -89,20 +86,15 @@ router.post("/commonFriends", (req, res) => {
           foundUsers.push(data.users[0]);
         }
       });
-      console.log(foundUsers, "chats");
       User.findOne({ username: req.body.username })
         .then((user) => {
-          console.log("friends", user.friends);
-          console.log("foundFriends", foundUsers);
           user.friends.map((friend) => {
             foundUsers.map((chat) => {
-              console.log("friend", chat, "userFriend", friend);
               if (friend == chat) {
                 foundFriends.push(chat);
               }
             });
           });
-          console.log("found", foundFriends);
         })
         .then(() => {
           foundFriends.map((friend, i) => {
@@ -113,7 +105,6 @@ router.post("/commonFriends", (req, res) => {
               };
             });
           });
-          console.log("sorted", foundFriends);
           res.json({ result: true, allFriends: foundFriends });
         });
     });

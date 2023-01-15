@@ -7,9 +7,7 @@ require('../models/connection');
 router.get('/', (req, res) => {
   let array = [];
   Concert.find().then((data) => {
-    // console.log('concerts', data);
     if (data) {
-      console.log('DATAAA', data);
       for (let i = 0; i < data.length; i++) {
         array.push({
           eventName: data[i].eventName,
@@ -18,7 +16,6 @@ router.get('/', (req, res) => {
           place: data[i].place,
         });
       }
-      console.log('array',array)
       res.json({ result: true, concerts: array });
     }
   });
